@@ -1,14 +1,15 @@
 <?php
 
 /* --------------------------------------------------------------------*
- * Generics.php                                                        *
+ * Command.php                                                         *
  * --------------------------------------------------------------------*
- * Description - This php file contains generic tools/ resources that  *
- * are for standard use across all components of this web service.     *
+ * Description - This interface is used as the foundation for all      *
+ * commands executed in the code storm cloud enviorment. All command   * 
+ * services must model after this interface in order to be utilized.   *
  * --------------------------------------------------------------------*
  * Project: Code Storm Backend 1.0.01                                  *
  * Author : McKim A. Jacob                                             *
- * Date Of Creation: 4 - 27 - 2014                                     *
+ * Date Of Creation: 4 - 28 - 2014                                     *
  * --------------------------------------------------------------------*
  * Copyright © 2014 Code Storm LLC. All Rights Reserved.               *
  * --------------------------------------------------------------------*
@@ -32,48 +33,24 @@
  */
 
 //===================================================================//
-//  Global Variables/Constants                                       //
+//  Includes                                                         //
 //===================================================================//
-
-/* @var The debug var that activates the Request Manager debug. */
-const mAnaGerDebuG = false;
-
-//--------------------------------------------------------------//
-// Code Storm Components                                        //
-//--------------------------------------------------------------//
-
-/* @var The debug controller that activates code storm debug. */
-const CoDEsToRMDebUG = false;
-
-/*--------------------------------------
- * @var CoDESTormDeBuGTyPE int - Controls 
- * the type of debug type being used.
- * 
- * Types: 
- * 0 - Json Error Reporting
- * 1 - MySQL debugging
- * 
- *------------------------------------*/
-const CoDESTormDeBuGTyPE = 0;
-
-//--------------------------------------------------------------//
-// API Components                                               //
-//--------------------------------------------------------------//
-
-/* @var The debug controller that activates Photo Friendzy debug. */
-const PhoToFRieNDZyDEBUG = false;
-
-/*--------------------------------------
- * @var deBuGTyPE int - Controls the 
- * type of debug type being used.
- * 
- * Types: 
- * 0 - Json Error Reporting
- * 1 - MySQL debugging
- * 
- *------------------------------------*/
-const PhotoFrieNDzYdeBuGTyPE = 0;
+include '../Generics/Generics.php';
 
 //===================================================================//
+//  Inteface Definition                                              //
+//===================================================================//
 
-
+interface Command {
+    
+    //----------------------------------------------------------------//
+    //  Interface Function Declerations                               //
+    //----------------------------------------------------------------//
+    
+    public function executeCommand ();
+    
+    function isValidContent ( $Content );
+    
+    //----------------------------------------------------------------//
+    
+}

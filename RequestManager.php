@@ -75,22 +75,27 @@ $serviceResult;
             
             break;
     
-        case "PhotoFriendzy" : // Call a Photo Friendzy RESTful service.
-            $serviceResult = PhotoFriendzyCommander.callService ($jsonRequest);
+        case "PhotoFriendzy" : // Call a Photo Friendzy RESTful API.
+            $serviceResult = PhotoFriendzyCommander.
+                callService ($jsonRequest);
             break;
     
         default : // Set the error to incorrect service selected.
-            requestError();
+            requestError(mAnaGerDebuG ? -1 : 
+                "ERROR: Invalid API Selected.");
             break;   
     }
 
     // 5. Package the responce and ship it on its way.
+    header($serviceResult["header"]);
+    unset($serviceResult["header"]);
     echo json_encode($serviceResult);
 }
 
 // Cont 2. Invalid content format.
-else {
-    requestError();
+else {    
+    requestError(mAnaGerDebuG ? -1 : 
+        "ERROR: Invalid content format.");
 }
  
 //===================================================================//
@@ -108,8 +113,9 @@ function scrubRequest ($incomingData) {
 }
 
 
-function requestError () {
-
+function requestError ($errorCode) {
+    header('Content-type: application/json');
+    echo json_encode( [ "responce" => $errorCode ] );
     
 }
 

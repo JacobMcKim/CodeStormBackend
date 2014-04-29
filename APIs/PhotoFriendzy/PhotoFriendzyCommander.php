@@ -54,6 +54,12 @@ class PhotoFriendzyCommander Implements Commander {
         
         // Make sure the serviceID element exists if so execute.
         if ($requestData ["serviceID"] != NULL) {
+            
+            // Set the default header type. Can be changed for pictures.
+            $serviceResult = ["header" => "Content-type: application"
+                . "/json"];
+            
+            // Parse for the right command to be displayed.
             switch ( $requestData ["ServiceID"] ) {
 
                 case "GetUserData" : // Pulls Photo Friendzy user data.
@@ -83,12 +89,16 @@ class PhotoFriendzyCommander Implements Commander {
                 case "GetPicture" : // Gets a requested game picture.
 
                     break;
+                
+                case "CheckNotifications" : // Gets any service notifications.
+                    
+                    break;
 
                 default: // Service requested not found.
                     $serviceResult = ["responce" => -1];
                     
                     // Debug mode only.
-                    if ( PhoToFRieNDZyDEBUG && deBuGTyPE === 0 ) {                    
+                    if ( PhoToFRieNDZyDEBUG && PhotoFrieNDzYdeBuGTyPE == 0 ) {                    
                         $serviceResult = ["Debug" => "ERROR IN "
                             . "PHOTOFRIENDZYCOMMANDER: INVALID "
                             . "COMMAND TYPE"];
@@ -104,13 +114,12 @@ class PhotoFriendzyCommander Implements Commander {
             $serviceResult = ["responce" => -1];
             
             // Debug mode only.
-            if ( PhoToFRieNDZyDEBUG && deBuGTyPE == 0 ) {
+            if ( PhoToFRieNDZyDEBUG && PhotoFrieNDzYdeBuGTyPE == 0 ) {
                 $serviceResult = ["Debug" => "ERROR IN "
                     . "PHOTOFRIENDZYCOMMANDER: INVALID COMMAND TYPE"];
             }
         }
-        
-        // give back the 
+    
         return $serviceResult;
         
     }

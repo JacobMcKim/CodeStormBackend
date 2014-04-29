@@ -54,22 +54,59 @@ class CodeStormCommander Implements Commander {
         
         // Make sure the serviceID element exists if so execute.
         if ($requestData ["serviceID"] != NULL) {
+            
+            // Set the default header type. Can be changed for pictures.
+            $serviceResult = ["header" => "Content-type: application"
+                . "/json"];
+            
+            // Parse for the right command to be displayed.
             switch ( $requestData ["ServiceID"] ) {
+                
+                case "CreateAccount" : // Creates a Code Storm account.
 
-                case "CreateAccount" : // Pulls Photo Friendzy user data.
-
+                    break;
+                
+                case "Login" : // Signs user in and creates a session.
+                    
+                    break;
+                
+                case "Logout" : // Signs user out and destroys session.
+                    
+                    break;
+                
+                case "UpdateUserData" : // Updates a users credentials.
+                    
+                    break;
+                
+                case "GetUserData" : // Gets Data about the user.
+                    
+                    break;
+                
+                case "ForgotPassword" : // Configures a password change.
+                    
+                    break;
+                
+                case "ChangePassword" : // Changes a users password.
+                    
+                    break;
+                
+                case "ChangeProfilePicture" : // Changes the profile picture.
+                    
+                    break;
+                
+                case "GetProfilePicture" : // Gets the profile picture. 
+                    
                     break;
 
                 default: // Service requested not found.
                     $serviceResult = ["responce" => -1];
                     
                     // Debug mode only.
-                    if ( CoDEsToRMDebUG && CoDESTormDeBuGTyPE === 0 ) {                    
+                    if ( CoDEsToRMDebUG && CoDESTormDeBuGTyPE == 0 ) {                    
                         $serviceResult = ["Debug" => "ERROR IN "
-                            . "PHOTOFRIENDZYCOMMANDER: INVALID "
+                            . "CODESTORMCOMMANDER: INVALID "
                             . "COMMAND TYPE"];
                     }
-                    
                     break;
             }
         }
@@ -80,9 +117,9 @@ class CodeStormCommander Implements Commander {
             $serviceResult = ["responce" => -1];
             
             // Debug mode only.
-            if ( PhoToFRieNDZyDEBUG && deBuGTyPE == 0 ) {
+            if ( CoDEsToRMDebUG && CoDESTormDeBuGTyPE == 0 ) {
                 $serviceResult = ["Debug" => "ERROR IN "
-                    . "PHOTOFRIENDZYCOMMANDER: INVALID COMMAND TYPE"];
+                    . "CODESTORMCOMMANDER: INVALID COMMAND TYPE"];
             }
         }
         
