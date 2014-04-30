@@ -36,7 +36,7 @@
 
 //===================================================================//
 
-class PhotoFriendzyCommander Implements Commander {
+class PhotoFriendzyCommander Implements ICommander {
     
     //----------------------------------------------------------------//
     //  Class Function Defintions                                     //

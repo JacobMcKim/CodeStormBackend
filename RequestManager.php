@@ -31,7 +31,9 @@
 //===================================================================//
 
 /*
- *
+ * TODO - MANAGE DEBuG clause in response objects. 4/30/14
+ * TODO - build out the scrub request. 4/30/14
+ * TODO - PHPUNITTESTING - 4/30/14
  */
 
 //===================================================================//
@@ -55,7 +57,7 @@ $serviceResult;
 
 // --- Main Routine -------------------------------------------------//
 
-// Set responce header data.
+// Set response header data.
  header('Content-type: application/json');
 
  // 1. Pull in the content buffer. 
@@ -72,7 +74,8 @@ $serviceResult;
     switch ( $jsonRequest ["Service"] ) {
         
         case "CodeStorm" : // Call a Code Storm RESTful service.
-            
+            $serviceResult = CodeStormCommander.
+                callService ($jsonRequest);
             break;
     
         case "PhotoFriendzy" : // Call a Photo Friendzy RESTful API.
@@ -86,7 +89,7 @@ $serviceResult;
             break;   
     }
 
-    // 5. Package the responce and ship it on its way.
+    // 5. Package the response and ship it on its way.
     header($serviceResult["header"]);
     unset($serviceResult["header"]);
     echo json_encode($serviceResult);
@@ -102,20 +105,35 @@ else {
 //  Utility Functions                                                //
 //===================================================================//
  
- /*
-  * 
-  */
+/******************************************************************
+ * @Description - This method is used to scrub all incoming data 
+ * packets of any SQL injection characters and strings. Its a 
+ * redundant security feature.
+ * 
+ * @param $incomingData (Array) - The incoming json data packet in
+ * which each element will be scrubbed.
+ * 
+ * @return The scrubbed json array.
+ * 
+ *****************************************************************/ 
 function scrubRequest ($incomingData) {
-    
-    /* The result output of the scrubbing. */
-    
+        
     
 }
 
-
+/******************************************************************
+ * @Description - Command is used to handle an error being fired 
+ * off inside of request manager.
+ * 
+ * @param $errorCode - The error code fired off by the request 
+ * manager that should be returned to the client.
+ * 
+ * @return None
+ * 
+ *****************************************************************/ 
 function requestError ($errorCode) {
     header('Content-type: application/json');
-    echo json_encode( [ "responce" => $errorCode ] );
+    echo json_encode( [ "response" => $errorCode ] );
     
 }
 

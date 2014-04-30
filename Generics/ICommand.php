@@ -1,7 +1,7 @@
 <?php
 
 /* --------------------------------------------------------------------*
- * Command.php                                                         *
+ * ICommand.php                                                        *
  * --------------------------------------------------------------------*
  * Description - This interface is used as the foundation for all      *
  * commands executed in the code storm cloud enviorment. All command   * 
@@ -25,31 +25,42 @@
  * ------------------------------------------------------------------- */
 
 //===================================================================//
-//  NOTES & BUGS AS OF 4-27-2014                                     //
-//===================================================================//
-
-/*
- *
- */
-
-//===================================================================//
 //  Includes                                                         //
 //===================================================================//
 include '../Generics/Generics.php';
 
-//===================================================================//
-//  Inteface Definition                                              //
-//===================================================================//
 
-interface Command {
+interface ICommand {
     
-    //----------------------------------------------------------------//
-    //  Interface Function Declerations                               //
-    //----------------------------------------------------------------//
+    //---------------------------------------------------------------//
+    //  Interface Function Declerations                              //
+    //---------------------------------------------------------------//
     
+    /******************************************************************
+    * @Description - A method called to execute the request API 
+    * command. This is where the magic happens in the command object.
+    * 
+    * @return A json array result of the command's execution.
+    * 
+    *****************************************************************/ 
     public function executeCommand ();
     
-    function isValidContent ( $Content );
+    /******************************************************************
+    * @Description - A method called to validate that an incomming API
+    * request has all the nessisary parameters to preform the request
+    * at hand.
+    * 
+    * @param $Content - The json content of the request to be cross 
+    * referenced with the expected result.
+    *
+    * @param $arrayParams - The array of keys that should be expected
+    * in the json request object.
+    * 
+    * @return Whether the request parameters are all there for 
+    * executing the request. (True - all there. False - Not all there)
+    * 
+    *****************************************************************/ 
+    function isValidContent ( $Content, $arrayParams );
     
     //----------------------------------------------------------------//
     

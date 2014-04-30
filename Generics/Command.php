@@ -1,9 +1,12 @@
 <?php
 
 /* --------------------------------------------------------------------*
- * Logout.php                                                          *
+ * Command.php                                                         *
  * --------------------------------------------------------------------*
- * Description - This class is used *
+ * Description - This abstract class implements the ICommand interface *
+ * to lay the foundational elements for all command classes that are   *
+ * derived from it. It contains a generic isValidContent method that   *
+ * can check if all reqired parameters exist. It can be overriden.     *
  * --------------------------------------------------------------------*
  * Project: Code Storm Backend 1.0.01                                  *
  * Author : McKim A. Jacob                                             *
@@ -34,8 +37,35 @@
 //  Includes                                                         //
 //===================================================================//
 
-class Logout implements ICommand {
+abstract class Command implements ICommand {
 
+    /* Executes the command defined for the service implementation. */
+    abstract public function executeCommand ();
     
+    /* Validates the commands parameters before execution. */
+    protected function isValidContent( $Content, $arrayParams ) {
+        
+        // --- Variable Declarations  -------------------------------//
+        
+        /* @var $isValid Boolean The result if all values are there. */
+        $isValid = true; 
+        
+        /* @var $isValid String The current parameter being checked. */
+        $param;
+        
+        // --- Main Routine -----------------------------------------//
+        
+        // Check each parameter and insure they are there.
+        foreach ( $param as $arrayParams )
+        {
+            if ( $Content [$param] == NULL ) {
+                $isValid = false;
+                break;
+            }
+        }
+        
+        return $isValid;
+       
+    }
     
 }

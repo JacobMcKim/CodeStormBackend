@@ -1,13 +1,19 @@
 <?php
 
 /* --------------------------------------------------------------------*
- * CreateAccount.php                                                   *
+ * ICommander.php                                                      *
  * --------------------------------------------------------------------*
- * Description - This class is used *
+ * Description - This interface is used as the foundation for all      *
+ * service commanders in any backend project of the code storm API web *
+ * services. The commander object serves as the accessor tool in which *
+ * executes and runs commands for a given requested service. In which  *
+ * then also returns a response of the given request to the request    *
+ * manager at the front of the web server for distribution back to the * 
+ * client.                                                             *
  * --------------------------------------------------------------------*
  * Project: Code Storm Backend 1.0.01                                  *
  * Author : McKim A. Jacob                                             *
- * Date Of Creation: 4 - 29 - 2014                                     *
+ * Date Of Creation: 4 - 28 - 2014                                     *
  * --------------------------------------------------------------------*
  * Copyright © 2014 Code Storm LLC. All Rights Reserved.               *
  * --------------------------------------------------------------------*
@@ -23,17 +29,28 @@
  * ------------------------------------------------------------------- */
 
 //===================================================================//
-//  NOTES & BUGS AS OF 4-29-2014                                     //
-//===================================================================//
-
-/*
- *
- */
-
-//===================================================================//
 //  Includes                                                         //
 //===================================================================//
+include '../Generics/Generics.php';
 
-class CreateAccount implements ICommand {
-    //put your code here
+interface ICommander {
+    
+    //----------------------------------------------------------------//
+    //  Interface Function Declerations                               //
+    //----------------------------------------------------------------//
+    
+     /******************************************************************
+     * @Description - A method called to select the API service to be 
+     * executed by the incoming request.
+     * 
+     * @param $requestData - The request JSON array to be fead in to the
+     * API command. 
+     * 
+     * @return The result of the API request as a JSON Array. 
+     * 
+     *****************************************************************/  
+    public static function callService ( $requestData );
+    
+    //----------------------------------------------------------------//
+    
 }

@@ -36,7 +36,7 @@
 
 //===================================================================//
 
-class CodeStormCommander Implements Commander {
+class CodeStormCommander Implements ICommander {
     
     //----------------------------------------------------------------//
     //  Class Function Defintions                                     //
@@ -63,39 +63,39 @@ class CodeStormCommander Implements Commander {
             switch ( $requestData ["ServiceID"] ) {
                 
                 case "CreateAccount" : // Creates a Code Storm account.
-
+                    $iCommand = new CreateAccount ($requestData);
                     break;
                 
                 case "Login" : // Signs user in and creates a session.
-                    
+                    $iCommand = new Login ($requestData);
                     break;
                 
                 case "Logout" : // Signs user out and destroys session.
-                    
+                    $iCommand = new Logout ($requestData);
                     break;
                 
                 case "UpdateUserData" : // Updates a users credentials.
-                    
+                    $iCommand = new UpdateUserData ($requestData);
                     break;
                 
                 case "GetUserData" : // Gets Data about the user.
-                    
+                    $iCommand = new GetUserData ($requestData);
                     break;
                 
                 case "ForgotPassword" : // Configures a password change.
-                    
+                    $iCommand = new ForgotPassword ($requestData);
                     break;
                 
                 case "ChangePassword" : // Changes a users password.
-                    
+                    $iCommand = new ChangePassword ($requestData);
                     break;
                 
                 case "ChangeProfilePicture" : // Changes the profile picture.
-                    
+                    $iCommand = new ChangeProfilePicture ($requestData);
                     break;
                 
                 case "GetProfilePicture" : // Gets the profile picture. 
-                    
+                    $iCommand = new GetProfilePicture ($requestData);
                     break;
 
                 default: // Service requested not found.
@@ -109,6 +109,10 @@ class CodeStormCommander Implements Commander {
                     }
                     break;
             }
+            
+            // Execute command.
+            $serviceResult = $iCommand -> executeCommand();
+
         }
         
         // Improperly formated request.
