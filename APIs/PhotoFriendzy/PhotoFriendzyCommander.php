@@ -48,76 +48,72 @@ class PhotoFriendzyCommander Implements ICommander {
         // --- Variable Declarations  -------------------------------//
         
         /* @var $serviceResult Array Contains the command results. */
-        $serviceResult = array ();
+        $serviceResult = ["header" => "Content-type: application"
+                . "/json"];
         
         // --- Main Routine -----------------------------------------//
         
         // Make sure the serviceID element exists if so execute.
         if ($requestData ["serviceID"] != NULL) {
             
-            // Set the default header type. Can be changed for pictures.
-            $serviceResult = ["header" => "Content-type: application"
-                . "/json"];
-            
-            // Parse for the right command to be displayed.
-            switch ( $requestData ["ServiceID"] ) {
-
-                case "GetUserData" : // Pulls Photo Friendzy user data.
-
-                    break;
-
-                case "UpdateUserData" : // Updates Friendzy user data.
-
-                    break;
-
-                case "GetGames" : // Get players current games list.
-
-                    break;
-
-                case "CreateGame" : // Creates a new game for player.
-
-                    break;
-
-                case "DeleteGame" : // Removes a game from game list.
-
-                    break;
-
-                case "UpdateGame" : // Update a given game.
-
-                    break;
-
-                case "GetPicture" : // Gets a requested game picture.
-
-                    break;
+            // Catch any exceptions that arise from the commands.
+            try {
                 
-                case "CheckNotifications" : // Gets any service notifications.
-                    
-                    break;
+                // Parse for the right command to be displayed.
+                switch ( $requestData ["ServiceID"] ) {
 
-                default: // Service requested not found.
-                    $serviceResult = ["responce" => -1];
-                    
-                    // Debug mode only.
-                    if ( PhoToFRieNDZyDEBUG && PhotoFrieNDzYdeBuGTyPE == 0 ) {                    
-                        $serviceResult = ["Debug" => "ERROR IN "
-                            . "PHOTOFRIENDZYCOMMANDER: INVALID "
-                            . "COMMAND TYPE"];
-                    }
-                    
-                    break;
+                    case "GetUserData" : // Pulls Photo Friendzy user data.
+
+                        break;
+
+                    case "UpdateUserData" : // Updates Friendzy user data.
+
+                        break;
+
+                    case "GetGames" : // Get players current games list.
+
+                        break;
+
+                    case "CreateGame" : // Creates a new game for player.
+
+                        break;
+
+                    case "DeleteGame" : // Removes a game from game list.
+
+                        break;
+
+                    case "UpdateGame" : // Update a given game.
+
+                        break;
+
+                    case "GetPicture" : // Gets a requested game picture.
+
+                        break;
+
+                    case "CheckNotifications" : // Gets any service notifys.
+
+                        break;
+
+                    default: // Service requested not found.
+                        $serviceResult = ["responce" => -1];
+                        break;
+                }
             }
+            
+            catch (PDOException $pdoE) {
+               $serviceResult = ["responce" => -1,"debug =>" 
+                    ."ERROR IN PHOTOFRIENDZYCOMMANDER: error in "
+                    . "db Service :\n"+$pdoE->getMessage()];
+            }
+            
         }
         
         // Improperly formated request.
         else 
         {
-            $serviceResult = ["responce" => -1];
-            
-            // Debug mode only.
-            if ( PhoToFRieNDZyDEBUG && PhotoFrieNDzYdeBuGTyPE == 0 ) {
-                $serviceResult = ["Debug" => "ERROR IN "
-                    . "PHOTOFRIENDZYCOMMANDER: INVALID COMMAND TYPE"];
-            }
+            $serviceResult = ["responce" => -1,"debug =>" 
+                ."ERROR IN PHOTOFRIENDZYCOMMANDER: Improper "
+                . "request format."];
         }
     
         return $serviceResult;

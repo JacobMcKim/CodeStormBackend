@@ -36,7 +36,7 @@ interface IDatabaseTool {
     //----------------------------------------------------------------//
     //  Interface Function Declerations                               //
     //----------------------------------------------------------------//
-    
+
     /******************************************************************
      * @Description - This method is to be internally used by the 
      * class implementing IDatabaseTool to establish a connection with 
@@ -49,34 +49,49 @@ interface IDatabaseTool {
      * 
      *****************************************************************/ 
     function openConnection ();
-    
-     /******************************************************************
-     * @Description - This method is to be internally used by the 
-     * class implementing IDatabaseTool to close an established
-     *  connection with the web db service it's connected to.
-     * 
-     * @param None 
-     * 
-     * @return Whether or not it was successful at closing the 
-     * connection (boolean).
-     * 
-     *****************************************************************/ 
+
+    /******************************************************************
+    * @Description - This method is to be internally used by the 
+    * class implementing IDatabaseTool to close an established
+    *  connection with the web db service it's connected to.
+    * 
+    * @param None 
+    * 
+    * @return Whether or not it was successful at closing the 
+    * connection (boolean).
+    * 
+    *****************************************************************/ 
     function closeConnection ();
     
-     /******************************************************************
-     * @Description - This method is used to fire off command queries to
-     * the database services its accessing.
-     * 
-     * @param $RequestString (String)- The command string to be 
-     * executed inside the DB service.
-     * 
-     * @param $RequestAtributes (associativeArray) - The atributes to
-     * be included into the query if any.
-     * 
-     * @return The success or failure of the query executed (Boolean).
-     * 
-     *****************************************************************/ 
-    function commitQuery ($RequestString, $RequestAtributes);
+    /******************************************************************
+    * @Description - This method is used to fire off command queries to
+    * the database services its accessing.
+    * 
+    * @param $RequestString (String)- The command string to be 
+    * executed inside the DB service.
+    * 
+    * @param $RequestAtributes (associativeArray) - The atributes to
+    * be included into the query if any.
+    * 
+    * @return The success or failure of the query executed (Boolean).
+    * 
+    *****************************************************************/
+    function executeQuery ($RequestString, $RequestAtributes);
+    
+    /******************************************************************
+    * @Description - This method is used to fetch a set of results 
+    * from a command issued to the data base service.
+    * 
+    * @param $RequestString (String)- The command string to be 
+    * executed inside the DB service.
+    * 
+    * @param $RequestAtributes (associativeArray) - The atributes to
+    * be included into the query if any.
+    * 
+    * @return The success or failure of the query executed (Boolean).
+    * 
+    *****************************************************************/ 
+    function executeFetch ($RequestString, $RequestAtributes);
     
     /******************************************************************
      * @Description - This method depending on the type of query will 
@@ -88,7 +103,7 @@ interface IDatabaseTool {
      * base.
      * 
      *****************************************************************/ 
-    function getResponce ();
+    //function getResponce ();
     
     //----------------------------------------------------------------//
     

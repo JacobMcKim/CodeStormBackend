@@ -38,9 +38,17 @@
 //===================================================================//
 
 abstract class Command implements ICommand {
+    
+    //---------------------------------------------------------------//
+    // Absract Methods                                               //
+    //---------------------------------------------------------------//
 
     /* Executes the command defined for the service implementation. */
     abstract public function executeCommand ();
+    
+    //---------------------------------------------------------------//
+    // Concrete Class Methods                                        //
+    //---------------------------------------------------------------//
     
     /* Validates the commands parameters before execution. */
     protected function isValidContent( $Content, $arrayParams ) {
@@ -51,7 +59,7 @@ abstract class Command implements ICommand {
         $isValid = true; 
         
         /* @var $isValid String The current parameter being checked. */
-        $param;
+        $param = NULL;
         
         // --- Main Routine -----------------------------------------//
         
@@ -67,5 +75,64 @@ abstract class Command implements ICommand {
         return $isValid;
        
     }
+    
+    
+    /******************************************************************
+     * @Description - This method is used to validate whether a 
+     * session for a given account actively exists in the sessions 
+     * database.
+     * 
+     * @param $dbRequest - The IDatabaseTool used to communicate with
+     * the database (IDatabaseTool).
+     * 
+     * @param $userID - The user id to be used in the session search.
+     * 
+     * @param $sessionID The session id used as a password to make sure
+     * were talking to the right session.
+     * 
+     * @return A boolean value depending on whether a session was found
+     * matching the given criteria. (True - Yes / False - No)
+     * 
+     * @Throws PDOException - If something goes wrong with the fetch
+     * command this will throw this. It should be handled in the class
+     * calling this method.
+     * 
+     *****************************************************************/
+    protected function checkSession ($dbRequest, $userID, $sessionID) {
+        
+        // --- Variable Declarations  -------------------------------//
+        
+        /* @var $sqlQuery (object) The query to execute on service. */
+        $sqlQuery = "";
+        
+        /* @var $result (object) The output of PDO sql executes.  */
+        $result = NULL;
+        
+        /* @var $commandResult (boolean) the result of this command. */
+        $commandResult = false;
+        
+        // --- Main Routine ------------------------------------------//
+
+        if ($userID != NULL) {
+            
+            // Search for any sessions that exist.
+            $sqlQuery = "SELECT UserID FROM CodeStormUsers.Sessions "
+                . "WHERE UserID = :userid AND SessionID = :sessionid "
+                . "AND ExpireTime > CURRENT_TIMESTAMP";
+            $result = $dbRequest->executeFetch($sqlQuery, 
+                ["userid" => $userID, "sessionid" => $sessionID]);
+
+            // Determine if we found the session were looking for.
+            if ($commandResult["UserID"] != NULL) {
+                $commandResult = true;
+            }
+        }
+        
+        // Return the result of the execution.
+        return $commandResult;
+        
+    }
+    
+    //---------------------------------------------------------------//
     
 }

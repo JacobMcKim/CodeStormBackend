@@ -48,86 +48,84 @@ class CodeStormCommander Implements ICommander {
         // --- Variable Declarations  -------------------------------//
         
         /* @var $serviceResult Array Contains the command results. */
-        $serviceResult = array ();
+        $serviceResult = ["header" => "Content-type: application"
+                . "/json"];
         
         // --- Main Routine -----------------------------------------//
         
         // Make sure the serviceID element exists if so execute.
         if ($requestData ["serviceID"] != NULL) {
             
-            // Set the default header type. Can be changed for pictures.
-            $serviceResult = ["header" => "Content-type: application"
-                . "/json"];
-            
-            // Parse for the right command to be displayed.
-            switch ( $requestData ["ServiceID"] ) {
-                
-                case "CreateAccount" : // Creates a Code Storm account.
-                    $iCommand = new CreateAccount ($requestData);
-                    break;
-                
-                case "Login" : // Signs user in and creates a session.
-                    $iCommand = new Login ($requestData);
-                    break;
-                
-                case "Logout" : // Signs user out and destroys session.
-                    $iCommand = new Logout ($requestData);
-                    break;
-                
-                case "UpdateUserData" : // Updates a users credentials.
-                    $iCommand = new UpdateUserData ($requestData);
-                    break;
-                
-                case "GetUserData" : // Gets Data about the user.
-                    $iCommand = new GetUserData ($requestData);
-                    break;
-                
-                case "ForgotPassword" : // Configures a password change.
-                    $iCommand = new ForgotPassword ($requestData);
-                    break;
-                
-                case "ChangePassword" : // Changes a users password.
-                    $iCommand = new ChangePassword ($requestData);
-                    break;
-                
-                case "ChangeProfilePicture" : // Changes the profile picture.
-                    $iCommand = new ChangeProfilePicture ($requestData);
-                    break;
-                
-                case "GetProfilePicture" : // Gets the profile picture. 
-                    $iCommand = new GetProfilePicture ($requestData);
-                    break;
+            // Catch any exceptions that arise from the commands.
+            try {
+                        
+                // Parse for the right command to be displayed.
+                switch ( $requestData ["ServiceID"] ) {
 
-                default: // Service requested not found.
-                    $serviceResult = ["responce" => -1];
-                    
-                    // Debug mode only.
-                    if ( CoDEsToRMDebUG && CoDESTormDeBuGTyPE == 0 ) {                    
-                        $serviceResult = ["Debug" => "ERROR IN "
-                            . "CODESTORMCOMMANDER: INVALID "
+                    case "CreateAccount" : // Creates a Code Storm account.
+                        $iCommand = new CreateAccount ($requestData);
+                        break;
+
+                    case "Login" : // Signs user in and creates a session.
+                        $iCommand = new Login ($requestData);
+                        break;
+
+                    case "Logout" : // Signs user out and destroys session.
+                        $iCommand = new Logout ($requestData);
+                        break;
+
+                    case "UpdateUserData" : // Updates a users credentials.
+                        $iCommand = new UpdateUserData ($requestData);
+                        break;
+
+                    case "GetUserData" : // Gets Data about the user.
+                        $iCommand = new GetUserData ($requestData);
+                        break;
+
+                    case "ForgotPassword" : // Configures a password change.
+                        $iCommand = new ForgotPassword ($requestData);
+                        break;
+
+                    case "ChangePassword" : // Changes a users password.
+                        $iCommand = new ChangePassword ($requestData);
+                        break;
+
+                    case "ChangeProfilePicture" : // Change the profile picture.
+                        $iCommand = new ChangeProfilePicture ($requestData);
+                        break;
+
+                    case "GetProfilePicture" : // Gets the profile picture. 
+                        $iCommand = new GetProfilePicture ($requestData);
+                        break;
+
+                    default: // Service requested not found.
+                        $serviceResult = ["responce" => -1,"debug =>" 
+                            ."ERROR IN CODESTORMCOMMANDER: INVALID "
                             . "COMMAND TYPE"];
-                    }
-                    break;
+                        break;
+                }
+
+                // Execute command.
+                $serviceResult = $iCommand -> executeCommand();
             }
             
-            // Execute command.
-            $serviceResult = $iCommand -> executeCommand();
-
+            catch (PDOException $pdoE) {
+               $serviceResult = ["responce" => -1,"debug =>" 
+                    ."ERROR IN CODESTORMCOMMANDER: error in "
+                    . "db Service :\n"+$pdoE->getMessage()];
+            }
+            
         }
         
         // Improperly formated request.
         else
         {
-            $serviceResult = ["responce" => -1];
-            
-            // Debug mode only.
-            if ( CoDEsToRMDebUG && CoDESTormDeBuGTyPE == 0 ) {
-                $serviceResult = ["Debug" => "ERROR IN "
-                    . "CODESTORMCOMMANDER: INVALID COMMAND TYPE"];
-            }
+            $serviceResult = ["responce" => -1,"debug =>" 
+                ."ERROR IN CODESTORMCOMMANDER: Improper "
+                . "request format."];
         }
         
-        // give back the 
+        // give back the result.
         return $serviceResult;
         
     }

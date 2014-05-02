@@ -3,7 +3,9 @@
 /* --------------------------------------------------------------------*
  * Logout.php                                                          *
  * --------------------------------------------------------------------*
- * Description - This class is used *
+ * Description - This class is used to preform code storm logout       *
+ * services for users. This command connects to a database and         *
+ * validates the logout is valid. If so it signs the user out.         *
  * --------------------------------------------------------------------*
  * Project: Code Storm Backend 1.0.01                                  *
  * Author : McKim A. Jacob                                             *
@@ -27,15 +29,118 @@
 //===================================================================//
 
 /*
- *
+ * NOTE : This only covers vital session removal task and doesn't 
+ * take into account saving data. This for now will be a design 
+ * decison that will force UpdateUserData anytime a change has 
+ * happened to the users data. 
  */
 
-//===================================================================//
-//  Includes                                                         //
-//===================================================================//
+/*
+ *+---------------------------------------------+
+ *|             Command Outputs                 |
+ *+-----------+---------------------------------+
+ *| Response  | Description                     |
+ *+-----------+---------------------------------+
+ *|    -1     | Failed to complete somewhere.   |
+ *|     1     | Succeeded at execution.         |
+ *+-----------+---------------------------------+
+ */
 
-class Logout implements ICommand {
+class Logout extends Command {
+    
+    //---------------------------------------------------------------//
+    // Class Atributes                                               //
+    //---------------------------------------------------------------//
+    
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
+    
+    /* @var $dbAccess () The database access object linking to DB.  */
+    private $dbAccess;
+    
+    //---------------------------------------------------------------//
+    // Constructor/Destructors                                       //
+    //---------------------------------------------------------------//
 
+    /******************************************************************
+     * @Description - Called to build the logout request command, It 
+     * takes in the command parameters and saves them locally to the 
+     * class.
+     * 
+     * @param $requestData - The json request data required to make the 
+     * request.
+     * 
+     * @return None
+     * 
+     *****************************************************************/
+    function __construct($requestData) {
+        
+        // Set the content locally.
+        $this->requestContent = $requestData;
+        
+        // Create the new required database objects to preform task.
+        $this->dbAccess = new AccountsDBTool ();
+
+    }
     
+    /******************************************************************
+     * @Description - Called when the command has finished executing
+     * and its time to tear down all the command's resources.
+     * 
+     * @param None 
+     * 
+     * @return None
+     * 
+     *****************************************************************/   
+    function __destruct() {
+        $this->dbAccess = NULL;
+        $this->requestContent = NULL;
+        
+    }
+
+    //---------------------------------------------------------------//
+    // Class Methods                                                 //
+    //---------------------------------------------------------------//
     
+    /* Executes the command defined for the service implementation. */
+    public function executeCommand() {
+        
+        // --- Variable Declarations  -------------------------------//
+        
+        /* @var $commands (Array) Used to cross check the request. */
+        $commandParams = array ("userid", "sessionid");
+        
+        // Check if the request contains all necessary parameters.
+        if ( isValidContent ($this->requestContent, $commandParams) ) {
+            
+            // Try to find the session.
+            try {
+                $sqlQuery = "DELETE FROM CodeStormUsers. "
+                        . "Sessions WHERE UserID = :userID AND"
+                        . " SessionID = :sessionID";
+                
+                $result = $this-> dbAccess->executeQuery($sqlQuery, 
+                     ["userID"=> $this->requestContent["userid"], 
+                     "sessionID" => $this->requestContent["sessionid"] ] );
+                
+                // Set the result.
+                if ($result)
+                    $commandResult = ["response" => 1];
+                else
+                    $commandResult = ["response" => -1];
+            }
+            
+            catch (PDOException $pdoE) {
+                $commandResult = ["response" => -1, "debug" =>
+                    "IN Logout -" + $pdoE->getMessage()];
+            }
+            
+            // Return the result of the command.
+            return $commandResult;
+            
+        }
+    }
+    
+    //---------------------------------------------------------------//
+
 }
