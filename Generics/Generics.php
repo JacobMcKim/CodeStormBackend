@@ -43,7 +43,7 @@ const mAnaGerDebuG = false;
 //--------------------------------------------------------------//
 
 /* @var The debug controller that activates code storm debug. */
-const CoDEsToRMDebUG = false;
+const _cOdeStORMDeBUg = false;
 
 /*--------------------------------------
  * @var CoDESTormDeBuGTyPE int - Controls 

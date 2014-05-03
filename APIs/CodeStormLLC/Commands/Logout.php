@@ -110,6 +110,17 @@ class Logout extends Command {
         /* @var $commands (Array) Used to cross check the request. */
         $commandParams = array ("userid", "sessionid");
         
+        /* @var $sqlQuery (object) The query to execute on service. */
+        $sqlQuery = NULL;
+        
+        /* @var $result (object) The output of PDO sql executes.  */
+        $result = NULL;
+        
+        /* @var $commandResult (Array) The result of the command. */
+        $commandResult = NULL;
+        
+        // --- Main Routine ------------------------------------------//
+        
         // Check if the request contains all necessary parameters.
         if ( isValidContent ($this->requestContent, $commandParams) ) {
             
@@ -117,7 +128,7 @@ class Logout extends Command {
             try {
                 $sqlQuery = "DELETE FROM CodeStormUsers. "
                         . "Sessions WHERE UserID = :userID AND"
-                        . " SessionID = :sessionID";
+                        . " SessionID = :sessionID LIMIT 1";
                 
                 $result = $this-> dbAccess->executeQuery($sqlQuery, 
                      ["userID"=> $this->requestContent["userid"], 

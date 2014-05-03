@@ -118,7 +118,7 @@ abstract class Command implements ICommand {
             // Search for any sessions that exist.
             $sqlQuery = "SELECT UserID FROM CodeStormUsers.Sessions "
                 . "WHERE UserID = :userid AND SessionID = :sessionid "
-                . "AND ExpireTime > CURRENT_TIMESTAMP";
+                . "AND ExpireTime > CURRENT_TIMESTAMP LIMIT 1";
             $result = $dbRequest->executeFetch($sqlQuery, 
                 ["userid" => $userID, "sessionid" => $sessionID]);
 

@@ -31,14 +31,9 @@
 //===================================================================//
 
 /*
- * TODO - MANAGE DEBuG clause in response objects. 4/30/14
- * TODO - build out the scrub request. 4/30/14
  * TODO - PHPUNITTESTING - 4/30/14
+ * TODO - FIGURE OUT MEDIA UPLOADING. 5/2/14
  */
-
-//===================================================================//
-//  Includes                                                         //
-//===================================================================//
 
 //===================================================================//
 //  Core Program                                                     //
@@ -55,22 +50,19 @@ $jsonRequest;
 /* @var Array $serviceResult The array result of the request. */
 $serviceResult;
 
-// --- Main Routine -------------------------------------------------//
+/* @var String $header The content header to send back to the client. */
+$header = 'Content-type: application/json';
 
-// Set response header data.
- header('Content-type: application/json');
+// --- Main Routine -------------------------------------------------//
 
  // 1. Pull in the content buffer. 
  $incomingData = file_get_contents('php://input');
  $jsonRequest = json_decode($incomingData);
 
  // 2. Determine if the incoming data is a json restful request.
- if ( $jsonRequest != NULL ) {
-     
-    // 3. Scrub all elments of the json string with anti injection.
-    $jsonRequest = scrubRequest($jsonRequest);
+ if ( $jsonRequest != NULL && validateRequest ($jsonRequest) ) {
 
-    // 4. Determine which service is being requested and call it.
+    // 3. Determine which service is being requested and call it.
     switch ( $jsonRequest ["Service"] ) {
         
         case "CodeStorm" : // Call a Code Storm RESTful service.
@@ -84,20 +76,47 @@ $serviceResult;
             break;
     
         default : // Set the error to incorrect service selected.
-            requestError(mAnaGerDebuG ? -1 : 
-                "ERROR: Invalid API Selected.");
+            $serviceResult = ["response"=> -1, 
+                "debug" => "ERROR: Invalid API Selected."]; 
             break;   
     }
+    
+    // 4. Strip debug if not needed.
+    if (!_cOdeStORMDeBUg && $serviceResult ["debug"] != NULL) {
+        unset($serviceResult["debug"]);
+    } 
 
     // 5. Package the response and ship it on its way.
-    header($serviceResult["header"]);
-    unset($serviceResult["header"]);
-    echo json_encode($serviceResult);
+    if ($serviceResult ["header"] != NULL) {
+        
+        // Set the header.
+        $header = $serviceResult["header"];
+        unset($serviceResult["header"]);
+        header($header);
+
+        // Ship back special data.
+        switch ($header) {
+            
+            case "Picture" :// TODO : Change to actual header info.
+                //TODO: Add photo return here.
+            break;
+        
+            default : // Invalid return type.
+                requestError (-1);
+                break;
+        }
+    }
+    
+    else { // Traditional JSON response.
+        header($header);
+        echo json_encode($serviceResult);
+    }
+    
 }
 
 // Cont 2. Invalid content format.
 else {    
-    requestError(mAnaGerDebuG ? -1 : 
+    requestError(_cOdeStORMDeBUg ? -1 : 
         "ERROR: Invalid content format.");
 }
  
@@ -106,18 +125,62 @@ else {
 //===================================================================//
  
 /******************************************************************
- * @Description - This method is used to scrub all incoming data 
- * packets of any SQL injection characters and strings. Its a 
- * redundant security feature.
+ * @Description - This method is used to determine if the incoming
+ * data types fit the parameters they are described as. If one 
+ * doesn't fit the bill then return a failed test.
  * 
  * @param $incomingData (Array) - The incoming json data packet in
  * which each element will be scrubbed.
  * 
- * @return The scrubbed json array.
+ * @return The boolean result whether the array is accurate or not.
  * 
  *****************************************************************/ 
-function scrubRequest ($incomingData) {
+function validateRequest ($incomingData) {
+    
+    // --- Variable Declarations  -----------------------------------//
+
+    /* @var $result (Boolean) The outcome of the scan. */
+    $result = true;
+    
+    // --- Main Routine ---------------------------------------------//
+    
+    // Insure there is a Service parameter and serviceID parameter.
+    if ( $incomingData["Service"] != NULL && 
+            $incomingData["ServiceID"] != NULL ) {
         
+        $keys = array_keys($incomingData);
+        foreach($keys as $key) {
+            
+            // If it is an email parameter validate that it is an email.
+            if (strpos($key,"email")) {
+                $result = filter_var($incomingData[$key], 
+                        FILTER_VALIDATE_EMAIL);
+            }
+            
+            // Checks that the password is at least 8 characters.
+            else if (strpos($key,"password")) {
+                $result = count ($incomingData[$key]) >= 8;
+            }
+            
+            // Checks that user id is legit. 
+            else if (strpos($key, "userid")) { 
+                $result = count ($incomingData[$key]) == 10 && 
+                    filter_var($incomingData[$key], FILTER_VALIDATE_INT);
+            }
+            
+            // Exit the search if we find a bad parameter.
+            if (!$result) {
+                break;
+            }
+        }
+    }
+    
+    else { // Invalid parameters.
+        $result = false;
+    }
+    
+    // Return the result of the function.
+    return $result;
     
 }
 
