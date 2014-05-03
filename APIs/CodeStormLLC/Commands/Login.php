@@ -54,7 +54,7 @@ class Login extends command {
     /* @var $requestContent (Array) The content of the user request. */
     private $requestContent = array();
     
-    /* @var $dbAccess () The database access object linking to DB.  */
+    /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
     //---------------------------------------------------------------//
@@ -120,10 +120,10 @@ class Login extends command {
         /* @var $sqlQuery (object) The query to execute on service. */
         $sqlQuery = "";
         
-        /* @var $result (object) The output of PDO sql executes.  */
+        /* @var $result (object) The output of PDO sql executes.    */
         $result = NULL;
         
-        /* @var $sessionID (String) The id of the new session. */
+        /* @var $sessionID (String) The id of the new session.       */
         $sessionID = keyGen (16);
         
         // --- Main Routine ------------------------------------------//
@@ -160,7 +160,7 @@ class Login extends command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $commands (Array) Used to cross check the request. */
+        /* @var $commands (Array) Used to cross check the request.   */
         $commandParams = array ("email", "password", "signType");
         
         /* @var $commandResult (Array) the result of this command.   */
@@ -178,7 +178,7 @@ class Login extends command {
         if ( isValidContent ($this->requestContent, $commandParams) ) {
                         
             // Find the account data tied to the email.
-            $findResult = findAccount ();
+            $findResult = $this->findAccount ();
             
             // Check for session data next if passwords match.
             if ($findResult != NULL && crypt ($this->requestContent["password"],
@@ -188,12 +188,12 @@ class Login extends command {
                 if ( !checkSession ($findResult["UserID"]) ) {
                     
                     // Create a new session for the user.
-                    $sessionResult = createSession ();
+                    $sessionResult = $this->createSession ();
 
                     // Get account data and return the result.
                     if ($sessionResult ["sessionID"] != NULL)
                     {
-                        $commandResult = getAccountData (
+                        $commandResult = $this->getAccountData (
                                 $findResult["UserID"] );
                     }
 
@@ -240,10 +240,10 @@ class Login extends command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $sqlQuery (object) The query to execute on service. */
+        /* @var $sqlQuery (object) The query to execute on service.  */
         $sqlQuery = NULL;
         
-        /* @var $result (object) The output of PDO sql executes.  */
+        /* @var $result (object) The output of PDO sql executes.     */
         $result = NULL;
         
         // --- Main Routine ------------------------------------------//
@@ -274,11 +274,11 @@ class Login extends command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $sqlQuery (object) The query to execute on service. */
+        /* @var $sqlQuery (object) The query to execute on service.  */
         $sqlQuery = NULL;
         
-        /* @var $result (object) The output of PDO sql executes.  */
-        $result = NULL;
+        /* @var $result (object) The output of PDO sql executes.     */
+        $result = NULL; 
         
         // --- Main Routine ------------------------------------------//
         

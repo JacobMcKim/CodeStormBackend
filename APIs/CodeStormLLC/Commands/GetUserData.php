@@ -34,9 +34,17 @@
  *
  */
 
-//===================================================================//
-//  Includes                                                         //
-//===================================================================//
+/*
+ *+---------------------------------------------+
+ *|             Command Outputs                 |
+ *+-----------+---------------------------------+
+ *| Response  | Description                     |
+ *+-----------+---------------------------------+
+ *|    -1     | Failed to complete somewhere.   |
+ *|     1     | Succeeded at execution.         |
+ *|     2     | Did not find anything with give.|
+ *+-----------+---------------------------------+
+ */
 
 class GetUserData extends Command {
 
@@ -47,7 +55,7 @@ class GetUserData extends Command {
     /* @var $requestContent (Array) The content of the user request. */
     private $requestContent = array();
     
-    /* @var $dbAccess () The database access object linking to DB.  */
+    /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
     //---------------------------------------------------------------//
@@ -94,28 +102,89 @@ class GetUserData extends Command {
     // Class Methods                                                 //
     //---------------------------------------------------------------//
     
+    /******************************************************************
+    * @Description - This method constructs a query list for data 
+    * being asked for in the Accounts table.
+    * 
+    * @param $terms (array) - The list of terms to parse through and  
+    * put together in the search string.
+    * 
+    * @return Returns the partial SQL string with the items selected
+    * for searching.
+    * 
+    *****************************************************************/
+    private function accountQuery ($sqlString, $terms) {
+        
+        // --- Variable Declarations  --------------------------------//
+        
+        /* @var $sqlString ($string) The list of items to search.     */
+        $sqlString = "";
+        
+        /* @var $term ($string) The present value to add to list.     */
+        $term = "";
+        
+        // --- Main Routine ------------------------------------------//
+        
+        // Loop through each term and add it to the list.
+        foreach ($term as $terms) {
+            switch ($term) {
+                case "userid":
+                    $sqlString.= " UserID";
+                    break;
+                case "username" :
+                    $sqlString.= " Username";
+                    break;
+
+                case "facebookid" :
+                    $sqlString.= " FacebookID";
+                    break;
+
+                case "coins" :
+                    $sqlString.= " Coins";
+                    break;
+
+                case "type" : 
+                    $sqlString.= " AccountType";
+                    break;
+                default : // Key not found.
+                    break;
+            }
+            
+            // Add a comma for each aditional element.
+            $sqlString.= ",";
+        }
+        
+        // Remove the last comma in the string.
+        rtrim($sqlString, ',');
+        
+        // Return the result.
+        return $sqlString;
+        
+    }
+    
+    
     /* Executes the command defined for the service implementation. */
     public function executeCommand() {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $commands (Array) Used to cross check the request. */
+        /* @var $commands (Array) Used to cross check the request.   */
         $commandParams = array ("userid", "sessionid", "requesttype",
             "searchables");
         
-        /* @var $commandResult (Array) the result of this command. */
+        /* @var $commandResult (Array) the result of this command.   */
         $commandResult = NULL;
         
-        /* @var $findResult (Array) The result of the item search. */
+        /* @var $findResult (Array) The result of the item search.   */
         $findResult = NULL;
         
-        /* @var $searchSql (String) The elements to search. */
+        /* @var $searchSql (String) The elements to search.          */
         $searchSql = "SELECT";
         
-        /* @var $toSql (String) What table to search in. */
+        /* @var $toSql (String) What table to search in.             */
         $toSql = "";
         
-        /* @var $conditionsSql (String) Conditions to be met. */
+        /* @var $conditionsSql (String) Conditions to be met.        */
         $conditionsSql = "";
         
         // --- Main Routine ------------------------------------------//
@@ -129,19 +198,19 @@ class GetUserData extends Command {
             // Select the table type and call helper function.
             switch ($this->requestContent["requesttype"]) {
                 case "account" :
-                    $searchSql = accountQuery ($searchSql, $this->
+                    $searchSql = $this->accountQuery ($searchSql, $this->
                             requestContent["searchables"]); 
                     $toSql = "FROM CodestormUsers.Accounts WHERE";
 
                     break;
                 case "session" :
-                    $searchSql = sessionQuery ($searchSql, $this->
+                    $searchSql = $this->sessionQuery ($searchSql, $this->
                             requestContent["searchables"]); 
                     $toSql = "FROM CodestormUsers.Sessions WHERE";
                     break;
 
                 case "forgots" :
-                    $searchSql = forgotsQuery ($searchSql, $this->
+                    $searchSql = $this->forgotsQuery ($searchSql, $this->
                             requestContent["searchables"]);
                     $toSql = "FROM CodestormUsers.iForgots WHERE";
                     break;
@@ -190,12 +259,14 @@ class GetUserData extends Command {
             }
             
             else { // Nothing queried.
-                $commandResult = ["response" => -1];
+                $commandResult = ["response" => -1,  "debug" => 
+                "IN GETUSERDATA - Nothing to query." ];
             }
         }
         
         else { // Invalid parameters and or session.
-            $commandResult = ["response" => -1];
+            $commandResult = ["response" => -1, "debug" => 
+                "IN GETUSERDATA - command invalid." ];
         }
         
         // Return the result of this commands execution.
@@ -206,7 +277,7 @@ class GetUserData extends Command {
     
     /******************************************************************
     * @Description - This method constructs a query list for data 
-    * being asked for in the Accounts table.
+    * being asked for in the iForgot table.
     * 
     * @param $terms (array) - The list of terms to parse through and  
     * put together in the search string.
@@ -215,17 +286,17 @@ class GetUserData extends Command {
     * for searching.
     * 
     *****************************************************************/
-    private function accountQuery ($sqlString, $terms) {
+    private function forgotsQuery ($terms) {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $sqlString ($string) The list of items to search. */
+        /* @var $sqlString ($string) The list of items to search.    */
         $sqlString = "";
         
-        /* @var $term ($string) The present value to add to list. */
+        /* @var $term ($string) The present value to add to list.    */
         $term = "";
         
-        // --- Main Routine ------------------------------------------//
+        // --- Main Routine -----------------------------------------//
         
         // Loop through each term and add it to the list.
         foreach ($term as $terms) {
@@ -233,22 +304,10 @@ class GetUserData extends Command {
                 case "userid":
                     $sqlString.= " UserID";
                     break;
-                case "username" :
-                    $sqlString.= " Username";
+                case "endtime" :
+                    $sqlString.= " ExpireTime";
                     break;
-
-                case "facebookid" :
-                    $sqlString.= " FacebookID";
-                    break;
-
-                case "coins" :
-                    $sqlString.= " Coins";
-                    break;
-
-                case "type" : 
-                    $sqlString.= " AccountType";
-                    break;
-                default : // Key not found.
+                default : // Not found.
                     break;
             }
             
@@ -280,10 +339,10 @@ class GetUserData extends Command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $sqlString ($string) The list of items to search. */
+        /* @var $sqlString ($string) The list of items to search.    */
         $sqlString = "";
         
-        /* @var $term ($string) The present value to add to list. */
+        /* @var $term ($string) The present value to add to list.    */
         $term = "";
         
         // --- Main Routine -----------------------------------------//
@@ -298,55 +357,6 @@ class GetUserData extends Command {
                     $sqlString.= " StartTime";
                     break;
 
-                case "endtime" :
-                    $sqlString.= " ExpireTime";
-                    break;
-                default : // Not found.
-                    break;
-            }
-            
-            // Add a comma for each aditional element.
-            $sqlString.= ",";
-        }
-        
-        // Remove the last comma in the string.
-        rtrim($sqlString, ',');
-        
-        // Return the result.
-        return $sqlString;
-        
-    }
-    
-    
-    /******************************************************************
-     * @Description - This method constructs a query list for data 
-     * being asked for in the iForgot table.
-     * 
-     * @param $terms (array) - The list of terms to parse through and  
-     * put together in the search string.
-     * 
-     * @return Returns the partial SQL string with the items selected
-     * for searching.
-     * 
-     *****************************************************************/
-    private function forgotsQuery ($terms) {
-        
-        // --- Variable Declarations  -------------------------------//
-        
-        /* @var $sqlString ($string) The list of items to search. */
-        $sqlString = "";
-        
-        /* @var $term ($string) The present value to add to list. */
-        $term = "";
-        
-        // --- Main Routine ------------------------------------------//
-        
-        // Loop through each term and add it to the list.
-        foreach ($term as $terms) {
-            switch ($term) {
-                case "userid":
-                    $sqlString.= " UserID";
-                    break;
                 case "endtime" :
                     $sqlString.= " ExpireTime";
                     break;

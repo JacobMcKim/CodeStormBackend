@@ -32,12 +32,6 @@
  *
  */
 
-//===================================================================//
-//  Includes                                                         //
-//===================================================================//
-
-//===================================================================//
-
 /*
  *+---------------------------------------------+
  *|             Command Outputs                 |
@@ -59,7 +53,7 @@ class CreateAccount extends Command {
     /* @var $requestContent (Array) The content of the user request. */
     private $requestContent = array();
     
-    /* @var $dbAccess () The database access object linking to DB.  */
+    /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
     //---------------------------------------------------------------//
@@ -121,22 +115,22 @@ class CreateAccount extends Command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $commands (Array) Used to cross check the request. */
+        /* @var $commands (Array) Used to cross check the request.   */
         $defaultParams = array ("newemail", "newpassword","deviceID");
         
-        /* @var $sqlQuery (object) The query to execute on service. */
+        /* @var $sqlQuery (object) The query to execute on service.  */
         $sqlQuery = NULL;
         
-        /* @var $result (object) The output of PDO sql executes.  */
+        /* @var $result (object) The output of PDO sql executes.     */
         $result = "";
         
-        /* @var $newAccount (array) The new account data inserted.  */
+        /* @var $newAccount (array) The new account data inserted.   */
         $newAccount = NULL;
         
-        /* @var $salt (String) The new salt for the users password. */
+        /* @var $salt (String) The new salt for the users password.  */
         $salt = "";
         
-        /* @var $defResult (Array) The result of this sub command. */
+        /* @var $defResult (Array) The result of this sub command.   */
         $defResult = NULL;
         
         
@@ -223,11 +217,11 @@ class CreateAccount extends Command {
             // Create an account depending on credentials...
             switch ($this->requestContent["createtype"]) {
                 case 0: // Default email & password.
-                    $commandResult = defaultCreate ();
+                    $commandResult = $this->defaultCreate ();
                     break;
                 
                 case 1: // Facebook creation.
-                    $commandResult = facebookCreate();                    
+                    $commandResult = $this->facebookCreate();                    
                     break;
                 
                 default:
@@ -261,23 +255,23 @@ class CreateAccount extends Command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $fbParams (Array) Used to cross check the request. */
+        /* @var $fbParams (Array) Used to cross check the request.   */
         $fbParams = array ("newemail", "fbid", "newusername", 
             "deviceID");
         
-        /* @var $sqlQuery (object) The query to execute on service. */
+        /* @var $sqlQuery (object) The query to execute on service.  */
         $sqlQuery = NULL;
         
-        /* @var $result (object) The output of PDO sql executes.  */
+        /* @var $result (object) The output of PDO sql executes.     */
         $result = "";
         
-        /* @var $newAccount (array) The new account data inserted.  */
+        /* @var $newAccount (array) The new account data inserted.   */
         $newAccount = NULL;
         
-        /* @var $salt (String) The new salt for the users password. */
+        /* @var $salt (String) The new salt for the users password.  */
         $salt = "";
         
-        /* @var $fbResult (Array) The result of this sub command. */
+        /* @var $fbResult (Array) The result of this sub command.    */
         $fbResult = NULL;
         
         // --- Main Routine ------------------------------------------//

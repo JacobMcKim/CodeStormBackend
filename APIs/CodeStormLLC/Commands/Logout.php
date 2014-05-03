@@ -55,7 +55,7 @@ class Logout extends Command {
     /* @var $requestContent (Array) The content of the user request. */
     private $requestContent = array();
     
-    /* @var $dbAccess () The database access object linking to DB.  */
+    /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
     //---------------------------------------------------------------//
@@ -107,16 +107,16 @@ class Logout extends Command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $commands (Array) Used to cross check the request. */
+        /* @var $commands (Array) Used to cross check the request.   */
         $commandParams = array ("userid", "sessionid");
         
-        /* @var $sqlQuery (object) The query to execute on service. */
+        /* @var $sqlQuery (object) The query to execute on service.  */
         $sqlQuery = NULL;
         
-        /* @var $result (object) The output of PDO sql executes.  */
+        /* @var $result (object) The output of PDO sql executes.     */
         $result = NULL;
         
-        /* @var $commandResult (Array) The result of the command. */
+        /* @var $commandResult (Array) The result of the command.    */
         $commandResult = NULL;
         
         // --- Main Routine ------------------------------------------//
@@ -138,7 +138,8 @@ class Logout extends Command {
                 if ($result)
                     $commandResult = ["response" => 1];
                 else
-                    $commandResult = ["response" => -1];
+                    $commandResult = ["response" => -1, "debug" => 
+                        "IN LOGOUT - SQL Request failed." ];
             }
             
             catch (PDOException $pdoE) {

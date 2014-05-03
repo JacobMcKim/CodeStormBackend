@@ -53,7 +53,7 @@ class ForgotPassword Extends Command {
     /* @var $requestContent (Array) The content of the user request. */
     private $requestContent = array();
     
-    /* @var $dbAccess () The database access object linking to DB.  */
+    /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
     //---------------------------------------------------------------//
@@ -105,16 +105,19 @@ class ForgotPassword Extends Command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $commands (Array) Used to cross check the request. */
+        /* @var $commands (Array) Used to cross check the request.    */
         $commandParams = array ("email");
         
-        /* @var $sqlQuery (object) The query to execute on service. */
+        /* @var $sqlQuery (object) The query to execute on service.   */
         $sqlQuery = NULL;
         
-        /* @var $result (object) The output of PDO sql executes.  */
+        /* @var $result (object) The output of PDO sql executes.      */
         $result = NULL;
         
-        /* @var $commandResult (Array) The result of the command. */
+        /* @var $sessionResult (object) The result of session create. */
+        $sessionResult = NULL;
+        
+        /* @var $commandResult (Array) The result of the command.     */
         $commandResult = NULL;
         
         // --- Main Routine ------------------------------------------//
@@ -140,17 +143,18 @@ class ForgotPassword Extends Command {
                         . "(UserID, SecurityCode, ExpireTime) VALUES "
                         . "(:userid, :securitycode, TIMESTAMPADD "
                         . "(HOUR, 2, CURRENT_TIMESTAMP))";
-                    $result = $this->dbAccess->executeQuery($sqlQuery,
+                    $sessionResult = $this->dbAccess->executeQuery($sqlQuery,
                         ["userid" => $result["UserID"], "securitycode" => 
                             $securityCode]);
 
                     // Determine result of the query.
-                    if ($result == true) {
-                        mailRequest($result, $securityCode);
+                    if ($sessionResult == true && 
+                            $this->mailRequest($result, $securityCode) ) {
                         $commandResult = ["response" => 1];
                     }
                     else {
-                        $commandResult = ["response" => -1];
+                        $commandResult = ["response" => -1, "debug" => 
+                        "IN FORGOTPASSWORD - Query/Mail came back false." ];
                     }
                 }
                 
@@ -166,7 +170,8 @@ class ForgotPassword Extends Command {
         }
         
         else { // Invalid content.
-            $commandResult = ["response" => -1];
+            $commandResult = ["response" => -1, "debug" => 
+                "IN FORGOTPASSWORD - command invalid." ];
         }
         
         // return the result of the command.
@@ -192,13 +197,13 @@ class ForgotPassword Extends Command {
 
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $to (String) - Who to send the email to. */
+        /* @var $to (String) - Who to send the email to.             */
         $to  = $this->requestContent["email"];
         
-        /* @var $subject (String) - What the message is about. */
+        /* @var $subject (String) - What the message is about.       */
         $subject = 'Did you forget your password?';
         
-        /* @var $message (String) - The HTML Body of the message. */
+        /* @var $message (String) - The HTML Body of the message.    */
         $message = '';
         
         /* @var $headers (String) - Meta data to be sent with email. */
@@ -238,7 +243,7 @@ class ForgotPassword Extends Command {
                 . ' <pleasedonotreply@CodeStormLLC.com>'."\r\n";
 
         // Send the email to the user.
-        mail($to, $subject, $message, $headers);   
+        return mail($to, $subject, $message, $headers);   
         
     }
 
