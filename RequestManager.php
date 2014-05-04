@@ -58,6 +58,9 @@ $header = 'Content-type: application/json';
  // 1. Pull in the content buffer. 
  $incomingData = file_get_contents('php://input');
  $jsonRequest = json_decode($incomingData);
+  
+ // Check and see if there is any images to pull as well.
+ // TODO : ADD THIS.
 
  // 2. Determine if the incoming data is a json restful request.
  if ( $jsonRequest != NULL && validateRequest ($jsonRequest) ) {

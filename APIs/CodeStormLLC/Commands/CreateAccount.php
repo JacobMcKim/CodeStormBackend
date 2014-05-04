@@ -49,12 +49,12 @@ class CreateAccount extends Command {
     //---------------------------------------------------------------//
     // Class Atributes                                               //
     //---------------------------------------------------------------//
-    
-    /* @var $requestContent (Array) The content of the user request. */
-    private $requestContent = array();
-    
+
     /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
+        
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
     
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
@@ -116,28 +116,27 @@ class CreateAccount extends Command {
         // --- Variable Declarations  -------------------------------//
         
         /* @var $commands (Array) Used to cross check the request.   */
-        $defaultParams = array ("newemail", "newpassword","deviceID");
+        $commandParams = array ("newemail", "newpassword","deviceID");
         
-        /* @var $sqlQuery (object) The query to execute on service.  */
-        $sqlQuery = NULL;
-        
-        /* @var $result (object) The output of PDO sql executes.     */
-        $result = "";
+        /* @var $comandResult (Array) The result of this sub command.*/
+        $comandResult = NULL;
         
         /* @var $newAccount (array) The new account data inserted.   */
         $newAccount = NULL;
         
+        /* @var $result (object) The output of PDO sql executes.     */
+        $result = "";
+        
         /* @var $salt (String) The new salt for the users password.  */
         $salt = "";
-        
-        /* @var $defResult (Array) The result of this sub command.   */
-        $defResult = NULL;
-        
-        
+                
+        /* @var $sqlQuery (object) The query to execute on service.  */
+        $sqlQuery = NULL;
+
         // --- Main Routine -----------------------------------------//
         
         // 1. Check that all parameters are there.
-        if ( isValidContent ($this->requestContent, $defaultParams) )
+        if ( isValidContent ($this->requestContent, $commandParams) )
         {
             try {
                 // 2. Check that account doesn't already exist.
@@ -176,34 +175,34 @@ class CreateAccount extends Command {
 
                     // 4. Return the result of the creation.
                     if ($result == true) {
-                        $defResult = ["response" => 1];
+                        $comandResult = ["response" => 1];
                     }
                     
                     else {
-                        $defResult = ["response" => -1, "debug" => 
+                        $comandResult = ["response" => -1, "debug" => 
                             "In CreateAccount (Default) - The create request"
                             . " Failed."];
                     }
                 }
                 
                 else { // Account already exists.
-                    $defResult = ["response" => 2];
+                    $comandResult = ["response" => 2];
                 }
             }
             
             catch (PDOException $pdoE) { // Error in connection.
-                $defResult =["response" => -1, "debug" => "In CreateAccount"
+                $comandResult =["response" => -1, "debug" => "In CreateAccount"
                     . "(Default) - "+$pdoE->getMessage()];
             }
         }
         
         else { // Invalid data types.
-            $defResult = ["response" => -1,"debug"=> "In CreateAccount"
+            $comandResult = ["response" => -1,"debug"=> "In CreateAccount"
                 . " (Default) - parameter missmatch."];
         }              
         
         // Return the end result.
-        return $defResult;
+        return $comandResult;
         
     }
     

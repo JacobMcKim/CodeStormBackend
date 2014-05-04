@@ -50,13 +50,13 @@ class UpdateUserData Extends Command {
     //---------------------------------------------------------------//
     // Class Atributes                                               //
     //---------------------------------------------------------------//
-    
-    /* @var $requestContent (Array) The content of the user request. */
-    private $requestContent = array();
-    
+ 
     /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
-    
+        
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
+   
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
     //---------------------------------------------------------------//
@@ -113,16 +113,16 @@ class UpdateUserData Extends Command {
     private function checkUsername ($Username) {
         
         // --- Variable Declarations  -------------------------------//
-        
+
+        /* @var $result (Array) The result of the query search.      */
+        $result = NULL;
+                
         /* @var $userExist (Boolean) The result of this method.      */
         $userExist = False;
         
         /* @var $sql (String) The query for the username tied.       */
         $sql = "SELECT UserID FROM CodestormUsers.Accounts WHERE"
                 . " Username = :username LIMIT 1";
-        
-        /* @var $result (Array) The result of the query search.      */
-        $result = NULL;
         
         // --- Main Routine -----------------------------------------//
 
@@ -147,14 +147,11 @@ class UpdateUserData Extends Command {
         
         // --- Variable Declarations  -------------------------------//
         
-        /* @var $updateSql (String) the SQL update command.          */
-        $updateSql = "UPDATE CodestormUsers.Accounts SET ";
-        
+        /* @var $commands (Array) Used to cross check the request.    */
+        $commandParams = array ("userid", "sessionid", "updates");
+                
         /* @var $commandResult (Array) the result of this command.   */
         $commandResult = NULL;
-        
-        /* @var $updates (Array) List of elements to update in db.   */
-        $updates = NULL;
         
         /* @var $key (String) An element to update given in array.   */
         $key = "";
@@ -162,6 +159,12 @@ class UpdateUserData Extends Command {
         /* @var $keys (Array) List of element names to update in db. */
         $keys = NULL;
         
+        /* @var $updates (Array) List of elements to update in db.   */
+        $updates = NULL;
+                
+        /* @var $updateSql (String) the SQL update command.          */
+        $updateSql = "UPDATE CodestormUsers.Accounts SET ";
+
         /* @var $result (Array) The result of the items updated.     */
         $result = NULL;
         

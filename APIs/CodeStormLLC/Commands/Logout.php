@@ -51,12 +51,12 @@ class Logout extends Command {
     //---------------------------------------------------------------//
     // Class Atributes                                               //
     //---------------------------------------------------------------//
-    
-    /* @var $requestContent (Array) The content of the user request. */
-    private $requestContent = array();
-    
+
     /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
+        
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
     
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
@@ -110,15 +110,15 @@ class Logout extends Command {
         /* @var $commands (Array) Used to cross check the request.   */
         $commandParams = array ("userid", "sessionid");
         
-        /* @var $sqlQuery (object) The query to execute on service.  */
-        $sqlQuery = NULL;
-        
-        /* @var $result (object) The output of PDO sql executes.     */
-        $result = NULL;
-        
         /* @var $commandResult (Array) The result of the command.    */
         $commandResult = NULL;
         
+        /* @var $result (object) The output of PDO sql executes.     */
+        $result = NULL;
+                
+        /* @var $sqlQuery (object) The query to execute on service.  */
+        $sqlQuery = NULL;
+
         // --- Main Routine ------------------------------------------//
         
         // Check if the request contains all necessary parameters.

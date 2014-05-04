@@ -49,12 +49,12 @@ class ForgotPassword Extends Command {
     //---------------------------------------------------------------//
     // Class Atributes                                               //
     //---------------------------------------------------------------//
-    
-    /* @var $requestContent (Array) The content of the user request. */
-    private $requestContent = array();
-    
+
     /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
+        
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
     
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
@@ -108,18 +108,18 @@ class ForgotPassword Extends Command {
         /* @var $commands (Array) Used to cross check the request.    */
         $commandParams = array ("email");
         
-        /* @var $sqlQuery (object) The query to execute on service.   */
-        $sqlQuery = NULL;
+        /* @var $commandResult (Array) The result of the command.     */
+        $commandResult = NULL;
         
         /* @var $result (object) The output of PDO sql executes.      */
         $result = NULL;
         
         /* @var $sessionResult (object) The result of session create. */
         $sessionResult = NULL;
-        
-        /* @var $commandResult (Array) The result of the command.     */
-        $commandResult = NULL;
-        
+                
+        /* @var $sqlQuery (object) The query to execute on service.   */
+        $sqlQuery = NULL;
+
         // --- Main Routine ------------------------------------------//
         
         // Check if the request contains all necessary parameters.
@@ -196,18 +196,18 @@ class ForgotPassword Extends Command {
     private function mailRequest ( $requestData, $SecurityCode ) {
 
         // --- Variable Declarations  -------------------------------//
-        
-        /* @var $to (String) - Who to send the email to.             */
-        $to  = $this->requestContent["email"];
-        
+                
+        /* @var $headers (String) - Meta data to be sent with email. */
+        $headers = '';
+                
+        /* @var $message (String) - The HTML Body of the message.    */
+        $message = '';
+
         /* @var $subject (String) - What the message is about.       */
         $subject = 'Did you forget your password?';
         
-        /* @var $message (String) - The HTML Body of the message.    */
-        $message = '';
-        
-        /* @var $headers (String) - Meta data to be sent with email. */
-        $headers = '';
+        /* @var $to (String) - Who to send the email to.             */
+        $to  = $this->requestContent["email"];
         
         // --- Main Routine ------------------------------------------//
         

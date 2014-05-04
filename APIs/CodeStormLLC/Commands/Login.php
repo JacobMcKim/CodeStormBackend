@@ -51,12 +51,12 @@ class Login extends command {
     // Class Atributes                                               //
     //---------------------------------------------------------------//
     
-    /* @var $requestContent (Array) The content of the user request. */
-    private $requestContent = array();
-    
     /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
+
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
     //---------------------------------------------------------------//
@@ -116,15 +116,15 @@ class Login extends command {
     private function createSession () {
         
         // --- Variable Declarations  -------------------------------//
-        
-        /* @var $sqlQuery (object) The query to execute on service. */
-        $sqlQuery = "";
-        
+       
         /* @var $result (object) The output of PDO sql executes.    */
         $result = NULL;
         
         /* @var $sessionID (String) The id of the new session.       */
         $sessionID = keyGen (16);
+        
+        /* @var $sqlQuery (object) The query to execute on service. */
+        $sqlQuery = "";
         
         // --- Main Routine ------------------------------------------//
 
@@ -239,12 +239,12 @@ class Login extends command {
     private function findAccount () {
         
         // --- Variable Declarations  -------------------------------//
+                
+        /* @var $result (object) The output of PDO sql executes.     */
+        $result = NULL;
         
         /* @var $sqlQuery (object) The query to execute on service.  */
         $sqlQuery = NULL;
-        
-        /* @var $result (object) The output of PDO sql executes.     */
-        $result = NULL;
         
         // --- Main Routine ------------------------------------------//
         
@@ -273,13 +273,13 @@ class Login extends command {
     private function getAccountData ($userID) {
         
         // --- Variable Declarations  -------------------------------//
-        
-        /* @var $sqlQuery (object) The query to execute on service.  */
-        $sqlQuery = NULL;
-        
+                
         /* @var $result (object) The output of PDO sql executes.     */
         $result = NULL; 
         
+        /* @var $sqlQuery (object) The query to execute on service.  */
+        $sqlQuery = NULL;
+
         // --- Main Routine ------------------------------------------//
         
         // Attempt to pull data from server.

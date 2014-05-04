@@ -48,13 +48,13 @@ class ChangePassword extends Command {
     //---------------------------------------------------------------//
     // Class Atributes                                               //
     //---------------------------------------------------------------//
-    
-    /* @var $requestContent (Array) The content of the user request. */
-    private $requestContent = array();
-    
+        
     /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
+
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
     //---------------------------------------------------------------//
@@ -101,22 +101,21 @@ class ChangePassword extends Command {
     
     /* Executes the command defined for the service implementation. */
     public function executeCommand() {
-        
                 
         // --- Variable Declarations  -------------------------------//
         
         /* @var $commands (Array) Used to cross check the request.   */
         $commandParams = array ("securitycode","newpassword");
-        
-        /* @var $sqlQuery (object) The query to execute on service.  */
-        $sqlQuery = NULL;
-        
+                
+        /* @var $commandResult (Array) The result of the command.    */
+        $commandResult = NULL;
+                
         /* @var $result (object) The output of PDO sql executes.     */
         $result = NULL;
         
-        /* @var $commandResult (Array) The result of the command.    */
-        $commandResult = NULL;
-        
+        /* @var $sqlQuery (object) The query to execute on service.  */
+        $sqlQuery = NULL;
+
         // --- Main Routine ------------------------------------------//
         
         // Check if the request contains all necessary parameters.

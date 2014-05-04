@@ -45,16 +45,13 @@ const mAnaGerDebuG = false;
 /* @var The debug controller that activates code storm debug. */
 const _cOdeStORMDeBUg = false;
 
-/*--------------------------------------
- * @var CoDESTormDeBuGTyPE int - Controls 
- * the type of debug type being used.
- * 
- * Types: 
- * 0 - Json Error Reporting
- * 1 - MySQL debugging
- * 
- *------------------------------------*/
-const CoDESTormDeBuGTyPE = 0;
+// AWS STUFF TODO ADD COMMENTS
+
+const _profileAWSKey = '';
+
+const _profileSecretKey = '';
+
+const _profileHost = '';
 
 //--------------------------------------------------------------//
 // API Components                                               //
@@ -62,17 +59,6 @@ const CoDESTormDeBuGTyPE = 0;
 
 /* @var The debug controller that activates Photo Friendzy debug. */
 const PhoToFRieNDZyDEBUG = false;
-
-/*--------------------------------------
- * @var deBuGTyPE int - Controls the 
- * type of debug type being used.
- * 
- * Types: 
- * 0 - Json Error Reporting
- * 1 - MySQL debugging
- * 
- *------------------------------------*/
-const PhotoFrieNDzYdeBuGTyPE = 0;
 
 //===================================================================//
 // Helper Methods                                                    //

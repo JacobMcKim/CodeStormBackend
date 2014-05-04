@@ -51,13 +51,13 @@ class GetUserData extends Command {
     //---------------------------------------------------------------//
     // Class Atributes                                               //
     //---------------------------------------------------------------//
-    
-    /* @var $requestContent (Array) The content of the user request. */
-    private $requestContent = array();
-    
+        
     /* @var $dbAccess () The database access object linking to DB.   */
     private $dbAccess;
     
+    /* @var $requestContent (Array) The content of the user request. */
+    private $requestContent = array();
+
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
     //---------------------------------------------------------------//
@@ -174,6 +174,9 @@ class GetUserData extends Command {
         
         /* @var $commandResult (Array) the result of this command.   */
         $commandResult = NULL;
+                
+        /* @var $conditionsSql (String) Conditions to be met.        */
+        $conditionsSql = "";
         
         /* @var $findResult (Array) The result of the item search.   */
         $findResult = NULL;
@@ -183,10 +186,7 @@ class GetUserData extends Command {
         
         /* @var $toSql (String) What table to search in.             */
         $toSql = "";
-        
-        /* @var $conditionsSql (String) Conditions to be met.        */
-        $conditionsSql = "";
-        
+
         // --- Main Routine ------------------------------------------//
         
         // Validate the request parameters and that a session exists.

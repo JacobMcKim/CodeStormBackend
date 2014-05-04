@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------*
  * Description - This class is used to provide access to the Code      *
  * Storm LLC. backend API's. It determines which command task to run   *
- * and recieves a responce back from the command upon completion of    *
+ * and recieves a response back from the command upon completion of    *
  * its given task. It then returns the results back to the Request     *
  * manage for finalized shipping back to the client.                   *
  * --------------------------------------------------------------------*
@@ -42,14 +42,13 @@ class CodeStormCommander Implements ICommander {
     //  Class Function Defintions                                     //
     //----------------------------------------------------------------//
     
-    /* This method is used to call out a command and give a responce. */
+    /* This method is used to call out a command and give a response. */
     public static function callService ($requestData) {
         
         // --- Variable Declarations  -------------------------------//
         
         /* @var $serviceResult Array Contains the command results. */
-        $serviceResult = ["header" => "Content-type: application"
-                . "/json"];
+        $serviceResult = NULL;
         
         // --- Main Routine -----------------------------------------//
         
@@ -99,7 +98,7 @@ class CodeStormCommander Implements ICommander {
                         break;
 
                     default: // Service requested not found.
-                        $serviceResult = ["responce" => -1,"debug =>" 
+                        $serviceResult = ["response" => -1,"debug =>" 
                             ."ERROR IN CODESTORMCOMMANDER: INVALID "
                             . "COMMAND TYPE"];
                         break;
@@ -110,7 +109,7 @@ class CodeStormCommander Implements ICommander {
             }
             
             catch (PDOException $pdoE) {
-               $serviceResult = ["responce" => -1,"debug =>" 
+               $serviceResult = ["response" => -1,"debug =>" 
                     ."ERROR IN CODESTORMCOMMANDER: error in "
                     . "db Service :\n"+$pdoE->getMessage()];
             }
@@ -120,7 +119,7 @@ class CodeStormCommander Implements ICommander {
         // Improperly formated request.
         else
         {
-            $serviceResult = ["responce" => -1,"debug =>" 
+            $serviceResult = ["response" => -1,"debug =>" 
                 ."ERROR IN CODESTORMCOMMANDER: Improper "
                 . "request format."];
         }
