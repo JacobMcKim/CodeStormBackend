@@ -175,7 +175,7 @@ class Login extends command {
         // --- Main Routine ------------------------------------------//
         
         // Check if the request contains all necessary parameters.
-        if ( isValidContent ($this->requestContent, $commandParams) ) {
+        if ( $this->isValidContent ($this->requestContent, $commandParams) ) {
                         
             // Find the account data tied to the email.
             $findResult = $this->findAccount ();
@@ -185,7 +185,7 @@ class Login extends command {
                 '$2a$07$findResult["Password"]') == $findResult["Password"]) {
                 
                 // Check that a session isn't already going.
-                if ( !checkSession ($findResult["UserID"]) ) {
+                if ( !$this->checkSession ($findResult["UserID"]) ) {
                     
                     // Create a new session for the user.
                     $sessionResult = $this->createSession ();

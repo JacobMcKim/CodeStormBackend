@@ -190,9 +190,9 @@ class GetUserData extends Command {
         // --- Main Routine ------------------------------------------//
         
         // Validate the request parameters and that a session exists.
-        if ( isValidContent ($this->requestContent, $commandParams)  &&
-            checkSession ($this->dbAccess, $this->requestContent["userid"],
-            $this->requestContent["sessionid"]) && 
+        if ( $this->isValidContent ($this->requestContent, $commandParams)  &&
+            $this->checkSession ($this->dbAccess, $this->requestContent
+            ["userid"], $this->requestContent["sessionid"]) && 
             count($this->requestContent["searchables"]) > 0 ) {
             
             // Select the table type and call helper function.

@@ -98,7 +98,7 @@ abstract class Command implements ICommand {
      * calling this method.
      * 
      *****************************************************************/
-    protected function checkSession ($dbRequest, $userID, $sessionID) {
+    public static function checkSession ($dbRequest, $userID, $sessionID) {
         
         // --- Variable Declarations  -------------------------------//
         

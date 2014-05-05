@@ -51,7 +51,7 @@ $jsonRequest;
 $serviceResult;
 
 /* @var String $header The content header to send back to the client. */
-$header = 'Content-type: application/json';
+$header = "Content-type: application/json";
 
 // --- Main Routine -------------------------------------------------//
 

@@ -134,7 +134,9 @@ class GetProfilePicture extends Command {
         // --- Main Routine ------------------------------------------//
         
         // Check if the request contains all necessary parameters.
-        if ( isValidContent ($this->requestContent, $commandParams) ) {
+        if ( $this->isValidContent ($this->requestContent, $commandParams) && 
+            $this->checkSession($this->dbAccess, $this->requestContent
+            ["userid"], $this->requestContent["sessionid"]) ) {
         
             // Find the profile image location.
             try {

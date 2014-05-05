@@ -122,7 +122,7 @@ class Logout extends Command {
         // --- Main Routine ------------------------------------------//
         
         // Check if the request contains all necessary parameters.
-        if ( isValidContent ($this->requestContent, $commandParams) ) {
+        if ( $this->isValidContent ($this->requestContent, $commandParams) ) {
             
             // Try to find the session.
             try {

@@ -37,13 +37,13 @@ class AccountsDBTool extends MySqlDatabaseTool {
         
     /* The host address of the database service. */
     const _host = "127.00.00.01:3306";
-    
-    /* The account username to use when signing into the service. */
-    const _user = "root";
-    
+        
     /* The account password to use when signing into the service. */
     const _password = "root";
     
+    /* The account username to use when signing into the service. */
+    const _user = "root";
+
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
     //---------------------------------------------------------------//

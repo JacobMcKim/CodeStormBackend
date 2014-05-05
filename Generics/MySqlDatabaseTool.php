@@ -44,20 +44,20 @@ class MySqlDatabaseTool Implements IDatabaseTool {
     // Class Atributes                                               //
     //---------------------------------------------------------------//
         
+    /* @var $dbConnect (PDOObject) The connection to the DB service. */
+    private $dbConnect = NULL;
+        
     /* The host address of the database service. */
     const _host = "127.00.00.01:3306";
-    
-    /* The account username to use when signing into the service. */
-    const _user = "root";
-    
-    /* The account password to use when signing into the service. */
-    const _password = "root";
     
     /* @var $isOpen (Boolean) Whether or not the connection is open. */
     private $isOpen = false;
     
-    /* @var $dbConnect (PDOObject) The connection to the DB service. */
-    private $dbConnect = NULL;
+    /* The account password to use when signing into the service. */
+    const _password = "root";
+
+    /* The account username to use when signing into the service. */
+    const _user = "root";
     
     //---------------------------------------------------------------//
     // Constructor/Destructors                                       //
@@ -139,36 +139,9 @@ class MySqlDatabaseTool Implements IDatabaseTool {
         
     }
     
-    /* Execute a sql command to the database.
-     * NOTE: The delimiter for this command is ':'.*/
-    public function executeQuery ($RequestString, $RequestAtributes) {
-        
-        // --- Variable Declarations  -------------------------------//
-        
-        /* @var $query - The command to be executed by PDO. */
-        $query = NULL;
-    
-        // --- Main Routine -----------------------------------------//
-        
-        // Make sure that the function.
-        if ($RequestString != null && mb_substr_count 
-                ($RequestAtributes, ':') == count ($RequestAtributes) )
-        {
-            // Execute the command.
-            $query = $this->dbConnect->prepare($RequestString, 
-                    array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-            return $query-> execute ($RequestAtributes);
-        }
-        
-        else {
-            throw new PDOException ("In AccountsDBTool(ExecuteCommand)"
-                    . " - command string and parameter mismatch.");
-        }
-        
-    }
     
     /* Issues a query to the DB service as well fetches results. 
-     * NOTE: The delimiter for this command is ':'.*/
+    * NOTE: The delimiter for this command is ':'.*/
     public function executeFetch ($RequestString, $RequestAtributes) {
         
         // --- Variable Declarations  -------------------------------//
@@ -198,6 +171,36 @@ class MySqlDatabaseTool Implements IDatabaseTool {
         
     }
     
+    
+    /* Execute a sql command to the database.
+     * NOTE: The delimiter for this command is ':'.*/
+    public function executeQuery ($RequestString, $RequestAtributes) {
+        
+        // --- Variable Declarations  -------------------------------//
+        
+        /* @var $query - The command to be executed by PDO. */
+        $query = NULL;
+    
+        // --- Main Routine -----------------------------------------//
+        
+        // Make sure that the function.
+        if ($RequestString != null && mb_substr_count 
+                ($RequestAtributes, ':') == count ($RequestAtributes) )
+        {
+            // Execute the command.
+            $query = $this->dbConnect->prepare($RequestString, 
+                    array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            return $query-> execute ($RequestAtributes);
+        }
+        
+        else {
+            throw new PDOException ("In AccountsDBTool(ExecuteCommand)"
+                    . " - command string and parameter mismatch.");
+        }
+        
+    }
+    
+    
     /******************************************************************
      * @Description - An accessor method stating whether or not the 
      * connection is open to the database or not.
@@ -211,6 +214,7 @@ class MySqlDatabaseTool Implements IDatabaseTool {
         return $this->isOpen;
         
     }
+    
     
     /* Opens a connection to the DB service. */
     private function openConnection() {

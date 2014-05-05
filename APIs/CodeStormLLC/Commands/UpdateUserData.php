@@ -171,9 +171,9 @@ class UpdateUserData Extends Command {
         // --- Main Routine -----------------------------------------//
         
         // Validate the request parameters and that a session exists.
-        if ( isValidContent ($this->requestContent, $commandParams)  &&
-            checkSession ($this->dbAccess, $this->requestContent["userid"],
-            $this->requestContent["sessionid"]) ) {
+        if ( $this->isValidContent ($this->requestContent, $commandParams)  &&
+            $this->checkSession ($this->dbAccess, $this->requestContent
+            ["userid"], $this->requestContent["sessionid"]) ) {
             
             // Decided what to push an update to.
             $updates = $this->requestContent["updates"];

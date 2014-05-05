@@ -136,7 +136,7 @@ class CreateAccount extends Command {
         // --- Main Routine -----------------------------------------//
         
         // 1. Check that all parameters are there.
-        if ( isValidContent ($this->requestContent, $commandParams) )
+        if ( $this->isValidContent ($this->requestContent, $commandParams) )
         {
             try {
                 // 2. Check that account doesn't already exist.
@@ -211,7 +211,7 @@ class CreateAccount extends Command {
     public function executeCommand() {
         
         // Make sure that there is a create type parameter.
-        if ( isValidContent ($this->requestContent, ["createtype"]) ) {
+        if ($this->isValidContent ($this->requestContent, ["createtype"]) ) {
          
             // Create an account depending on credentials...
             switch ($this->requestContent["createtype"]) {
@@ -276,7 +276,7 @@ class CreateAccount extends Command {
         // --- Main Routine ------------------------------------------//
         
         // Make sure that there is a create type parameter.
-        if ( isValidContent ($this->requestContent, $fbParams) ) {
+        if ( $this->isValidContent ($this->requestContent, $fbParams) ) {
             
             try {
                 // 1. Validate the account doesn't already exist.
